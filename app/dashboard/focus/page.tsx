@@ -33,7 +33,7 @@ export default function FocusPage() {
       triggerHaptic("success");
     }
     setShowReflection(true);
-    toast.success("Focus session complete!");
+    //toast.success("Focus session complete!");
   };
 
   const {

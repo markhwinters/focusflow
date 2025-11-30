@@ -7,6 +7,8 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
+    const { id } = await params;
+
     const { userId: clerkId } = await auth();
 
     if (!clerkId) {
@@ -24,7 +26,7 @@ export async function PATCH(
     const body = await request.json();
     const session = await db.session.update({
       where: {
-        id: params.id,
+        id: id,
         userId: user.id,
       },
       data: {
