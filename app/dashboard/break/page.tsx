@@ -31,7 +31,7 @@ export default function BreakPage() {
     if (settings?.hapticEnabled) {
       triggerHaptic("success");
     }
-    toast.success("Break complete! Ready to focus again?");
+    //toast.success("Break complete! Ready to focus again?");
   };
 
   const { timeRemaining, isRunning, isPaused, start, pause, resume, reset } =

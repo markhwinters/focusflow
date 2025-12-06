@@ -26,6 +26,7 @@ export function useTimer({
   const storageKey = `focusflow_timer_${sessionType.toLowerCase()}`;
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Load timer state from localStorage
   const loadState = (): TimerState => {
     if (typeof window === "undefined") {
       return {
@@ -66,8 +67,10 @@ export function useTimer({
     };
   };
 
+  // Initialize state from loadState
   const [state, setState] = useState<TimerState>(loadState);
 
+  // Save timer state to localStorage
   const saveState = useCallback(
     (newState: TimerState) => {
       if (typeof window !== "undefined") {
@@ -78,11 +81,18 @@ export function useTimer({
     [storageKey]
   );
 
+  // Update timeRemaining when initialDuration changes (e.g., slider moved)
   useEffect(() => {
-    const loadedState = loadState();
-    setState(loadedState);
-  }, []);
+    if (!state.isRunning && !state.isPaused) {
+      setState((prev) => ({
+        ...prev,
+        timeRemaining: initialDuration,
+        duration: initialDuration,
+      }));
+    }
+  }, [initialDuration, state.isRunning, state.isPaused]);
 
+  // Start timer session
   const start = useCallback(async () => {
     try {
       const response = await fetch("/api/sessions", {
@@ -111,6 +121,7 @@ export function useTimer({
     }
   }, [sessionType, initialDuration, saveState]);
 
+  // Pause timer
   const pause = useCallback(() => {
     const newState = {
       ...state,
@@ -121,6 +132,7 @@ export function useTimer({
     saveState(newState);
   }, [state, saveState]);
 
+  // Resume timer
   const resume = useCallback(() => {
     const newState = {
       ...state,
@@ -131,6 +143,7 @@ export function useTimer({
     saveState(newState);
   }, [state, saveState]);
 
+  // Reset timer
   const reset = useCallback(() => {
     const newState: TimerState = {
       timeRemaining: initialDuration,
@@ -146,6 +159,7 @@ export function useTimer({
     }
   }, [initialDuration, saveState, storageKey]);
 
+  // Mark session as completed
   const complete = useCallback(async () => {
     if (!state.sessionId) return;
 
@@ -176,6 +190,7 @@ export function useTimer({
     onComplete();
   }, [state.sessionId, state.duration, onComplete, saveState, storageKey]);
 
+  // Timer ticking logic
   useEffect(() => {
     if (state.isRunning && !state.isPaused) {
       intervalRef.current = setInterval(() => {
