@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { Navbar } from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
 
 export default async function DashboardLayout({
   children,
@@ -19,6 +20,7 @@ export default async function DashboardLayout({
       <main className="flex-1 container mx-auto px-4 py-6 md:py-8">
         {children}
       </main>
+      <Footer />
     </div>
   );
 }

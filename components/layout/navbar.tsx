@@ -41,8 +41,12 @@ export function Navbar() {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-6">
             <MobileNav />
-            <Link href="/dashboard" className="flex items-center gap-2">
-              <h1 className="text-xl font-bold text-primary">FocusFlow</h1>
+            <Link
+              href="/"
+              className="flex items-center space-x-2 text-xl font-bold text-gray-900 dark:text-gray-50"
+            >
+              <Focus className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+              <span>FocusFlow</span>
             </Link>
 
             <nav className="hidden md:flex items-center gap-1">

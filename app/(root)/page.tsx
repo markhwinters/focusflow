@@ -20,20 +20,6 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-secondary/10">
-      <nav className="border-b bg-background/80 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-primary">FocusFlow</h1>
-          <div className="flex items-center gap-4">
-            <Link href="/sign-in">
-              <Button variant="ghost">Sign In</Button>
-            </Link>
-            <Link href="/sign-up">
-              <Button>Get Started</Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
-
       <main className="container mx-auto px-4 py-20">
         <div className="max-w-6xl mx-auto space-y-20">
           <section className="text-center space-y-6">
@@ -146,14 +132,6 @@ export default async function HomePage() {
           </section>
         </div>
       </main>
-
-      <footer className="border-t bg-card/50 backdrop-blur-sm mt-20">
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center text-sm text-muted-foreground">
-            <p>© 2024 FocusFlow. Built with Next.js, Clerk, and Prisma.</p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
