@@ -119,7 +119,7 @@ export default function DashboardPage() {
             <CardTitle>Quick Start</CardTitle>
             <CardDescription>Start a focus or break session</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="flex flex-col gap-3 space-y-4">
             <Link href="/dashboard/focus">
               <Button className="w-full" size="lg">
                 <Focus className="mr-2 h-5 w-5" />
@@ -158,7 +158,7 @@ export default function DashboardPage() {
                       {session.type === "FOCUS" ? (
                         <Focus className="h-4 w-4 text-primary" />
                       ) : (
-                        <Coffee className="h-4 w-4 text-secondary" />
+                        <Coffee className="h-4 w-4 text-primary" />
                       )}
                       <span className="text-sm font-medium">
                         {session.type === "FOCUS" ? "Focus" : "Break"}
