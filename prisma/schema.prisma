@@ -9,17 +9,68 @@ datasource db {
 
 
 model User {
-  id         String    @id @default(cuid())
-  clerkId    String    @unique          // Clerk user ID
-  email      String    @unique
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      Session[]
+  accounts      Account[]
+  focussessions FocusSession[]
+  settings      Settings[]
 
-  sessions   Session[]
-  settings   Settings?
+  @@unique([email])
+  @@map("user")
 }
 
 model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+model FocusSession {
   id          String       @id @default(cuid())
   userId      String
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -32,6 +83,7 @@ model Session {
 
   @@index([userId])
   @@index([startedAt])
+  @@map("focussession")
 }
 
 enum SessionType {
@@ -41,11 +93,13 @@ enum SessionType {
 
 model Reflection {
   id        String   @id @default(cuid())
-  sessionId String   @unique
-  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  focusSessionId String   @unique
+  focussession   FocusSession  @relation(fields: [focusSessionId], references: [id], onDelete: Cascade)
   rating    Int      // 1–5
   notes     String?
   createdAt DateTime @default(now())
+
+  @@map("reflection")
 }
 
 model Settings {
@@ -59,4 +113,7 @@ model Settings {
   hapticEnabled   Boolean  @default(true)
 
   updatedAt       DateTime @updatedAt
+
+
+  @@map("settings")
 }
