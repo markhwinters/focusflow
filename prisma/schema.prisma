@@ -18,6 +18,7 @@ model User {
   
   sessions  Session[] 
   settings  Settings?
+  dataExports DataExport[]
   
   @@map("user")
 }
@@ -64,4 +65,16 @@ model Settings {
   updatedAt       DateTime @updatedAt
   
   @@map("settings")
+}
+
+model DataExport {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  ipAddress String?
+  
+  @@index([userId])
+  @@index([createdAt])
+  @@map("dataexport")
 }
